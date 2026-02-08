@@ -82,6 +82,21 @@
                 width: auto; /* Keeps aspect ratio */
                 display: block;
             }
+            .heart {
+                position: fixed;
+                top: -10px; /* Start just off-screen */
+                font-size: 20px;
+                user-select: none;
+                pointer-events: none; /* So they don't block clicks */
+                z-index: 9999;
+                animation: fall linear forwards;
+            }
+
+            @keyframes fall {
+                to {
+                    transform: translateY(105vh) rotate(360deg);
+                }
+            }
         </style>
     </head>
     <body>
@@ -249,5 +264,39 @@
                 noButton.style.top = `${newTop}px`;
             }
         });
+    </script>
+    <script>
+        const button = document.getElementById("yes");
+
+        button.addEventListener("click", () => {
+            // Create 15 hearts per click
+            for (let i = 0; i < 1000; i++) {
+                createHeart();
+            }
+        });
+
+        function createHeart() {
+            const heart = document.createElement("span");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+
+            // Randomize starting horizontal position (0 to 100% of the screen)
+            heart.style.left = Math.random() * 100 + "vw";
+
+            // Randomize fall speed (between 2 and 5 seconds)
+            const duration = Math.random() * 3 + 2;
+            heart.style.animationDuration = duration + "s";
+
+            // Randomize size slightly
+            heart.style.opacity = Math.random();
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+
+            document.body.appendChild(heart);
+
+            // Clean up the element after it finishes falling
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
     </script>
 </html>
